@@ -21,25 +21,71 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Configures application-scoped beans that expose use cases, queries, and event handlers.
+ *
+ * <p>This configuration class resides in the adapter layer of the hexagon. It follows the
+ * Dependency Inversion Principle by wiring concrete adapters (repositories and publishers)
+ * into abstraction-based use case services. It keeps its responsibility limited to bean registration (SRP)
+ * and keeps downstream components open for extension (OCP) by being declarative.
+ */
 @Configuration
 public class BeanConfig {
 
+    /**
+     * Provides the {@link CommandUseCase} implementation for creating people.
+     *
+     * <p>It depends on repository and publisher ports rather than their implementations (DIP)
+     * and delegates creation logic to {@link CreatePersonService}, which encapsulates the event-driven reaction.
+     *
+     * @param writePort     port used to persist Person entities
+     * @param publisherPort port used to publish domain events after persistence
+     * @return initialized command use case
+     */
     @Bean
     public CommandUseCase<CreatePersonCommand> createPersonUseCase(PersonWriteRepositoryPort writePort,
                                                                    EventPublisherPort publisherPort) {
         return new CreatePersonService(writePort, publisherPort);
     }
 
+    /**
+     * Provides a query use case that loads a person by identifier.
+     *
+     * <p>The use case depends on {@link PersonReadRepositoryPort}, abstracting the persistence
+     * implementation away from the controller. This aligns with hexagonal architecture because
+     * controllers talk to the core through ports rather than the inner repository.
+     *
+     * @param readPort port for reading person entities
+     * @return person retrieval use case
+     */
     @Bean
     public QueryUseCase<GetPersonQuery, Optional<Person>> getPersonUseCase(PersonReadRepositoryPort readPort) {
         return new GetPersonService(readPort);
     }
 
+    /**
+     * Provides a query use case that lists all persons.
+     *
+     * <p>This bean adheres to the Open/Closed Principle by letting {@link ListPersonService} implement
+     * listing logic independently of how the controller consumes the result.
+     *
+     * @param readPort port for reading person entities
+     * @return listing query use case
+     */
     @Bean
     public QueryUseCase<ListPersonQuery, List<Person>> listPersonUseCase(PersonReadRepositoryPort readPort) {
         return new ListPersonService(readPort);
     }
 
+    /**
+     * Exposes the event handler that responds to domain events emitted in the application core.
+     *
+     * <p>This bean wires {@link EventDrivenService}, which can publish events via {@link EventPublisherPort}
+     * implementations, keeping event processing in the application layer while adapters (Kafka/SNS) handle transport.
+     *
+     * @param publisherPort port used to forward domain events to infrastructure
+     * @return configured event handler
+     */
     @Bean
     public EventHandlerUseCase<DomainEvent> eventHandler(EventPublisherPort publisherPort) {
         return new EventDrivenService()::handle;
