@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
+import java.util.Locale;
 
 /**
  * Aggregate root in the domain layer representing a person.
@@ -60,7 +61,18 @@ public class Person {
     public enum Gender {
         MALE,
         FEMALE,
-        OTHER
+        OTHER;
+
+        public static Gender from(String value) {
+            if (value == null) {
+                throw new IllegalArgumentException("Gender value must not be null");
+            }
+            String normalized = value.trim().toUpperCase(Locale.ROOT);
+            if (normalized.isEmpty()) {
+                throw new IllegalArgumentException("Gender value must not be blank");
+            }
+            return Gender.valueOf(normalized);
+        }
     }
 
     /**
