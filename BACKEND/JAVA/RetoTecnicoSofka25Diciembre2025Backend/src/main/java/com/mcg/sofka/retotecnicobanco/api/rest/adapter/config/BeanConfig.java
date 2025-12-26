@@ -43,7 +43,7 @@ public class BeanConfig {
      * @return initialized command use case
      */
     @Bean
-    public CommandUseCase<CreatePersonCommand> createPersonUseCase(PersonWriteRepositoryPort writePort,
+    public CommandUseCase<CreatePersonCommand, Person> createPersonUseCase(PersonWriteRepositoryPort writePort,
                                                                    EventPublisherPort publisherPort) {
         return new CreatePersonService(writePort, publisherPort);
     }
