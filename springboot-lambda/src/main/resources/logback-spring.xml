@@ -1,0 +1,4 @@
+﻿<configuration>
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <springProperty scope="context" name="LOG_PATTERN" source="logging.pattern.console"/>
+</configuration>
