@@ -1,5 +1,8 @@
 package com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Command DTO that carries the values needed to create a new Person aggregate.
  *
@@ -33,7 +36,15 @@ public class CreatePersonCommand {
      * @param address        postal address
      * @param phone          contact phone
      */
-    public CreatePersonCommand(String firstName, String lastName, String gender, Integer age, String identification, String address, String phone) {
+    @JsonCreator
+    public CreatePersonCommand(
+            @JsonProperty("firstName") String firstName,
+            @JsonProperty("lastName") String lastName,
+            @JsonProperty("gender") String gender,
+            @JsonProperty("age") Integer age,
+            @JsonProperty("identification") String identification,
+            @JsonProperty("address") String address,
+            @JsonProperty("phone") String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
