@@ -27,12 +27,12 @@ public class PersonQueryController {
     }
 
     @GetMapping("/single")
-    public ResponseEntity<Optional<Person>> get(@RequestParam Long id) {
+    public ResponseEntity<Optional<Person>> get(@RequestParam("id") Long id) {
         return ResponseEntity.ok(getUseCase.execute(new GetPersonQuery(id)));
     }
 
     @GetMapping
-    public ResponseEntity<List<Person>> list(@RequestParam String identification) {
+    public ResponseEntity<List<Person>> list(@RequestParam("identification") String identification) {
         return ResponseEntity.ok(listUseCase.execute(new ListPersonQuery(identification)));
     }
 }
