@@ -1,7 +1,5 @@
 package com.mcg.sofka.retotecnicobanco.api.rest.domain.event;
 
-package com.mcg.sofka.retotecnicobanco.api.rest.domain.event;
-
 /**
  * Domain-level publisher that can be implemented by domain services or adapters to emit events.
  *
