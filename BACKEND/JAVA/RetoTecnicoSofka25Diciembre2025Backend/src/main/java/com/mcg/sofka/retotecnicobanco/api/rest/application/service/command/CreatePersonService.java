@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
  * letting the adapter layer provide the concrete implementations. This service is part of the application
  * core inside the hexagonal architecture and triggers the event-driven flow after persistence operations.
  */
-public class CreatePersonService implements CommandUseCase<CreatePersonCommand> {
+public class CreatePersonService implements CommandUseCase<CreatePersonCommand, Person> {
 
     private final PersonWriteRepositoryPort writePort;
     private final EventPublisherPort publisherPort;
@@ -44,11 +44,11 @@ public class CreatePersonService implements CommandUseCase<CreatePersonCommand> 
      * @param command command DTO containing creation data
      */
     @Override
-    public void execute(CreatePersonCommand command) {
+    public Person execute(CreatePersonCommand command) {
         Person person = new Person();
         person.setFirstName(command.getFirstName());
         person.setLastName(command.getLastName());
-        person.setGender(Person.Gender.valueOf(command.getGender()));
+        person.setGender(Person.Gender.from(command.getGender()));
         person.setAge(command.getAge());
         person.setIdentification(command.getIdentification());
         person.setAddress(command.getAddress());
@@ -58,5 +58,6 @@ public class CreatePersonService implements CommandUseCase<CreatePersonCommand> 
 
         Person saved = writePort.save(person);
         publisherPort.publish(new PersonCreatedEvent(saved));
+        return saved;
     }
 }
