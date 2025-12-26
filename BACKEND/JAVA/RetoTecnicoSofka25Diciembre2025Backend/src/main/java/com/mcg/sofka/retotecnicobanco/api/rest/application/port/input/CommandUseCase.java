@@ -9,12 +9,14 @@ package com.mcg.sofka.retotecnicobanco.api.rest.application.port.input;
  *
  * @param <C> command DTO type
  */
-public interface CommandUseCase<C> {
+public interface CommandUseCase<C, R> {
 
     /**
-     * Executes the command flow (validate, mutate, publish events) inside the application core.
+     * Executes the command flow (validate, mutate, publish events) inside the application core and
+     * returns the result for the adapter.
      *
      * @param command command DTO carrying all necessary data
+     * @return command result (e.g., persisted aggregate)
      */
-    void execute(C command);
+    R execute(C command);
 }
