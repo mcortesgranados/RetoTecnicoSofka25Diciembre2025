@@ -60,4 +60,12 @@ public class SwaggerConfig {
 				.pathsToMatch("/movement/**")
 				.build();
 	}
+
+	@Bean
+	public GroupedOpenApi movementEventApi() {
+		return GroupedOpenApi.builder()
+				.group("movement-event")
+				.pathsToMatch("/movement/event/**")
+				.build();
+	}
 }
