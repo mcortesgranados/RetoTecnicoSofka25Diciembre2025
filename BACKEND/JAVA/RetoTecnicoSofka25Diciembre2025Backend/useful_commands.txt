@@ -1,0 +1,2 @@
+In Visual Studio Code Command Palette
+java: Clean Java Language Server Workspace
