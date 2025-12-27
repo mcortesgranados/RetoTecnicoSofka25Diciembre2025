@@ -1,26 +1,34 @@
 package com.mcg.sofka.retotecnicobanco.api.rest.adapter.config;
 
+import com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto.CreateAccountCommand;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto.CreatePersonCommand;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto.CreateClientCommand;
-import com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto.CreatePersonCommand;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.input.CommandUseCase;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.input.EventHandlerUseCase;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.input.QueryUseCase;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.AccountReadRepositoryPort;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.AccountWriteRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.ClientReadRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.ClientWriteRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.EventPublisherPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.PersonReadRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.PersonWriteRepositoryPort;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetAccountQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetClientQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetPersonQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListAccountByClientQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListPersonQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.EventDrivenService;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreateAccountService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreateClientService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreatePersonService;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetAccountService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetClientService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetPersonService;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListAccountByClientService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListPersonService;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.event.DomainEvent;
+import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Account;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Client;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Person;
 import org.springframework.context.annotation.Bean;
@@ -54,6 +62,23 @@ public class BeanConfig {
     public CommandUseCase<CreatePersonCommand, Person> createPersonUseCase(PersonWriteRepositoryPort writePort,
                                                                    EventPublisherPort publisherPort) {
         return new CreatePersonService(writePort, publisherPort);
+    }
+
+    @Bean
+    public CommandUseCase<CreateAccountCommand, Account> createAccountUseCase(ClientReadRepositoryPort clientReadPort,
+                                                                             AccountReadRepositoryPort accountReadPort,
+                                                                             AccountWriteRepositoryPort accountWritePort) {
+        return new CreateAccountService(clientReadPort, accountReadPort, accountWritePort);
+    }
+
+    @Bean
+    public QueryUseCase<GetAccountQuery, Optional<Account>> getAccountUseCase(AccountReadRepositoryPort readPort) {
+        return new GetAccountService(readPort);
+    }
+
+    @Bean
+    public QueryUseCase<ListAccountByClientQuery, List<Account>> listAccountByClientUseCase(AccountReadRepositoryPort readPort) {
+        return new ListAccountByClientService(readPort);
     }
 
     @Bean
