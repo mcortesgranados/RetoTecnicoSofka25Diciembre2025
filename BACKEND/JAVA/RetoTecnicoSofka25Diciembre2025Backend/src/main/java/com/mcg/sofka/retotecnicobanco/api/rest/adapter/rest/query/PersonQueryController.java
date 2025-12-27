@@ -4,6 +4,10 @@ import com.mcg.sofka.retotecnicobanco.api.rest.application.port.input.QueryUseCa
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetPersonQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListPersonQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Person;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/person/query")
+@Tag(name = "Person Query", description = "Read-only endpoints for Person data")
 public class PersonQueryController {
 
     private final QueryUseCase<GetPersonQuery, Optional<Person>> getUseCase;
@@ -26,11 +31,20 @@ public class PersonQueryController {
         this.listUseCase = listUseCase;
     }
 
+    @Operation(summary = "Look up a person by identifier")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Person found"),
+            @ApiResponse(responseCode = "404", description = "Person not found")
+    })
     @GetMapping("/single")
     public ResponseEntity<Optional<Person>> get(@RequestParam("id") Long id) {
         return ResponseEntity.ok(getUseCase.execute(new GetPersonQuery(id)));
     }
 
+    @Operation(summary = "List persons filtered by identification")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Matching persons returned")
+    })
     @GetMapping
     public ResponseEntity<List<Person>> list(@RequestParam("identification") String identification) {
         return ResponseEntity.ok(listUseCase.execute(new ListPersonQuery(identification)));
