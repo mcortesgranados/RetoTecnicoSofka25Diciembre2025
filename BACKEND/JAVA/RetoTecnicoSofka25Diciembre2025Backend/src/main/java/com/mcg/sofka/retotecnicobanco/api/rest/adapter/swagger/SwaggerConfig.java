@@ -52,4 +52,12 @@ public class SwaggerConfig {
 				.pathsToMatch("/account/**")
 				.build();
 	}
+
+	@Bean
+	public GroupedOpenApi movementApi() {
+		return GroupedOpenApi.builder()
+				.group("movement")
+				.pathsToMatch("/movement/**")
+				.build();
+	}
 }
