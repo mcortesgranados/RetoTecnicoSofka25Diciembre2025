@@ -1,0 +1,169 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Prueba Técnica Arquitectura Microservicio</title>
+  <style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #fafbfc; color: #23272f; margin: 0; padding: 0; }
+  .container { max-width: 950px; margin: 40px auto; background: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.08); border-radius: 10px; padding: 32px 40px; }
+  h1 { color: #1565c0; }
+  h2 { color: #2e7d32; margin-top: 32px; }
+  h3 { color: #7b1fa2; margin-top: 24px; }
+  .note { background: #e3f2fd; border-left: 4px solid #1976d2; padding: 16px 20px; margin: 18px 0; border-radius: 7px; }
+  .note ul { list-style: disc inside; margin: 0; padding-left: 1.2em; }
+  .note li { margin-bottom: 3px; line-height: 1.35; }
+  .note p { margin: 0 0 6px 0; line-height: 1.5; }
+  .footer { text-align: right; color: #888; font-size: 1em; margin-top: 40px; }
+  .tag { background: #e3f2fd; color: #1565c0; border-radius: 4px; padding: 3px 8px; margin-left: 6px; font-size: 0.95em; }
+  dt { color: #2e7d32; font-weight: bold; margin-top: 10px; }
+  dd { margin-bottom: 10px; }
+  .params table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  .params th, .params td { border: 1px solid #ccc; padding: 6px; }
+  .important { background: #fffde7; border-left: 4px solid #fbc02d; padding: 12px 18px; margin: 18px 0; border-radius: 5px; }
+  .sideEffects ul, .solid ul { margin: 0; padding-left: 20px; }
+  @media (max-width: 600px) { .container { padding: 16px 8px; } }
+  /* Code block styling */
+  pre { background: #f6f8fa; padding: 14px; border-radius: 8px; overflow: auto; font-size: 0.92em; }
+  code { font-family: Consolas, 'Courier New', monospace; }
+  .row { display:flex; gap:20px; flex-wrap:wrap; }
+  .col { flex:1 1 420px; }
+  /* Small visual helpers */
+  .endpoint { border: 1px solid #e0e0e0; padding: 12px 14px; border-radius: 8px; background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.04); }
+  .json { white-space: pre; font-family: Consolas, 'Courier New', monospace; font-size: 0.95em; }
+  .success { color: #2e7d32; font-weight: 600; }
+  .error { color: #c62828; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Prueba Técnica<br><span class="tag">Arquitectura Microservicio (2023)</span></h1>
+    <h2>Indicaciones generales</h2>
+    <div class="note">
+      <ul>
+        <li>Aplique todas las buenas prácticas, patrones Repository, etc que considere necesario (se tomará en cuenta este punto para la calificación).</li>
+        <li>El manejo de entidades se debe manejar JPA / Entity Framework Core.</li>
+        <li>Se debe manejar mensajes de excepciones.</li>
+        <li>Se debe realizar como mínimo dos pruebas unitarias de los endpoints.</li>
+        <li>La solución se debe desplegar en Docker.</li>
+        <li>Posterior a la entrega de este ejercicio, se estará agendando una entrevista técnica donde el candidato deberá defender la solución planteada.</li>
+      </ul>
+    </div>
+    <h2>Herramientas y tecnologías utilizadas</h2>
+    <ul>
+      <li>Java spring boot / NetCore 5 o superior / Asp 4.8 o inferior</li>
+      <li>IDE de su preferencia</li>
+      <li>Base de Datos Relacional</li>
+      <li>Postman v9.13.2 (validador de API) / Karate DSL</li>
+    </ul>
+    <h2>Complejidad por Seniority</h2>
+    <p>Nota: Considerar las siguientes indicaciones en base al perfil al que esta aplicando. Ejemplo: si es un perfil SemiSenior solo realizar lo indicado para este perfil.</p>
+    <h3>Junior</h3>
+    <p>Implementar los diferentes endpoints para cumplir las funcionalidades: F1, F2, F3, no es mandatorio funcionalidades: F4, F5, F6.</p>
+    <h3>SemiSenior</h3>
+    <p>Separar en 2 microservicios, agrupando (Cliente, Persona) y (Cuenta, Movimientos) donde se contemple una comunicación asincrónica entre los 2 microservicios. Cumplir las funcionalidades: F1, F2, F3, F4, F5 deseable la funcionalidad F6.</p>
+    <h3>Senior</h3>
+    <p>Implementar en 2 microservicios, agrupando (Cliente, Persona) y (Cuenta, Movimientos) donde se contemple una comunicación asincrónica entre los 2 microservicios. Cumplir las funcionalidades F1, F2, F3, F4, F5, F6, F7.</p>
+    <p>La solución debe contemplar (no necesariamente implementado) factores como: rendimiento, escalabilidad, resiliencia.</p>
+    <h2>Generación de API Rest</h2>
+    <p>Manejar los verbos: Get, Post, Put, Push, deletePersona.</p>
+    <h3>Persona</h3>
+    <p>Implementar la clase persona con los siguientes datos: nombre, género, edad, identificación, dirección, teléfono. Debe manejar su clave primaria (PK).</p>
+    <h3>Cliente</h3>
+    <p>Cliente debe manejar una entidad, que herede de la clase persona. Un cliente tiene: clienteid, contraseña, estado. El cliente debe tener una clave única (PK).</p>
+    <h3>Cuenta</h3>
+    <p>Cuenta debe manejar una entidad. Una cuenta tiene: número cuenta, tipo cuenta, saldo Inicial, estado. Debe manejar su Clave única.</p>
+    <h3>Movimientos</h3>
+    <p>Movimientos debe manejar una entidad. Un movimiento tiene: Fecha, tipo movimiento, valor, saldo. Debe manejar su Clave única.</p>
+    <h2>Funcionalidades del API</h2>
+    <h3>F1: Generación de CRUDS</h3>
+    <p>Crear, editar, actualizar y eliminar registros - Entidades: Cliente, Cuenta y Movimiento.</p>
+    <p>Los nombres de los endpoints a generar son:</p>
+    <ul>
+      <li>/cuentas</li>
+      <li>/clientes</li>
+      <li>/movimientos</li>
+    </ul>
+    <h3>F2: Registro de movimientos</h3>
+    <ul>
+      <li>Para un movimiento se pueden tener valores positivos o negativos.</li>
+      <li>Al realizar un movimiento se debe actualizar el saldo disponible.</li>
+      <li>Se debe llevar el registro de las transacciones realizadas.</li>
+    </ul>
+    <h3>F3: Registro de movimientos sin saldo</h3>
+    <p>Al realizar un movimiento el cual no cuente con saldo, debe alertar mediante el siguiente mensaje “Saldo no disponible”. Defina, según su expertise, la mejor manera de capturar y mostrar el error.</p>
+    <h3>F4: Reportes</h3>
+    <p>Generar un reporte de “Estado de cuenta” especificando un rango de fechas y cliente.</p>
+    <p>Este reporte debe contener:</p>
+    <ul>
+      <li>Cuentas asociadas con sus respectivos saldos.</li>
+      <li>Detalle de movimientos de las cuentas.</li>
+    </ul>
+    <p>El endpoint que se debe utilizar para esto debe ser el siguiente: <code>/reportes?fecha=rango fechas</code>.</p>
+    <p>El servicio del reporte debe retornar la información en formato JSON. Defina, según su expertise, la mejor manera de solicitar y retornar esta información.</p>
+    <h3>F5: Pruebas unitarias</h3>
+    <p>Implementar 1 prueba unitaria para la entidad de dominio Cliente.</p>
+    <h3>F6: Pruebas de Integración</h3>
+    <p>Implementar 1 prueba de integración.</p>
+    <h3>F7: Despliegue</h3>
+    <p>Despliegue de la solución en contenedores.</p>
+    <h2>Casos de Uso (Ejemplos)</h2>
+    <h3>1. Creación de Usuarios</h3>
+    <p>Nombres Dirección Teléfono Contraseña Estado</p>
+    <ul>
+      <li>Jose Lema - Otavalo sn y principal - 098254785 - 1234 - True</li>
+      <li>Marianela Montalvo - Amazonas y NNUU - 097548965 - 5678 - True</li>
+      <li>Juan Osorio - 13 junio y Equinoccial - 098874587 - 1245 - True</li>
+    </ul>
+    <h3>2. Creación de Cuentas de Usuario</h3>
+    <p>Numero Cuenta Tipo Saldo Inicial Estado Cliente</p>
+    <ul>
+      <li>478758 - Ahorro - 2000 - True - Jose Lema</li>
+      <li>225487 - Corriente - 100 - True - Marianela Montalvo</li>
+      <li>495878 - Ahorros - 0 - True - Juan Osorio</li>
+      <li>496825 - Ahorros - 540 - True - Marianela Montalvo</li>
+    </ul>
+    <h3>3. Crear una nueva Cuenta Corriente para Jose Lema</h3>
+    <p>Numero Cuenta Tipo Saldo Inicial Estado Cliente</p>
+    <ul>
+      <li>585545 - Corriente - 1000 - True - Jose Lema</li>
+    </ul>
+    <h3>4. Realizar los siguientes movimientos</h3>
+    <p>Numero Cuenta Tipo Saldo Inicial Estado Movimiento</p>
+    <ul>
+      <li>478758 - Ahorro - 2000 - True - Retiro de 575</li>
+      <li>225487 - Corriente - 100 - True - Deposito de 600</li>
+      <li>495878 - Ahorros - 0 - True - Deposito de 150</li>
+      <li>496825 - Ahorros - 540 - True - Retiro de 540</li>
+    </ul>
+    <h3>5. Listado de Movimiento, por fechas x usuario</h3>
+    <p>Fecha Cliente Numero Cuenta Tipo Saldo Inicial Estado Movimiento Saldo Disponible</p>
+    <ul>
+      <li>10/2/2022 - Marianela Montalvo - 225487 - Corriente - 100 - True - 600 - 700</li>
+      <li>8/2/2022 - Marianela Montalvo - 496825 - Ahorros - 540 - True - -540 - 0</li>
+    </ul>
+    <h3>Ejemplo Json</h3>
+    <pre class="json">{
+"Fecha":"10/2/2022",
+"Cliente":"Marianela Montalvo",
+"Numero Cuenta":"225487",
+"Tipo":"Corriente",
+"Saldo Inicial":100,
+"Estado":true,
+"Movimiento":600,
+"Saldo Disponible":700
+}</pre>
+    <h2>Instrucciones de despliegue</h2>
+    <ul>
+      <li>Generar el script de base datos, entidades y esquema datos, con el nombre BaseDatos.sql.</li>
+      <li>Ejecutar Postman para poder realizar las verificaciones (http://{servidor}:{puerto}/api/{metodo}...{Parámetros}).</li>
+    </ul>
+    <h2>Entregables</h2>
+    <ul>
+      <li>La Solución debe ser cargado a un repositorio Git público, se debe enviar la ruta de este repositorio.</li>
+      <li>Descarga archivo Json, de Aplicación Postman, para validación de los endpoints.</li>
+      <li>Se debe entregar antes de la fecha y hora indicada por correo.</li>
+    </ul>
+    <p class="footer">Documento generado como guía literal de la Prueba Técnica solicitada.</p>
+  </div>
+</body>
+</html>
