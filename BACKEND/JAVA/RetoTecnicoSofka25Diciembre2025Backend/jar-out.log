@@ -1,0 +1,50 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2025-12-26T01:09:56.893-05:00  INFO 22008 --- [           main] toTecnicoSofka25Diciembre2025Application : Starting RetoTecnicoSofka25Diciembre2025Application v0.0.1-SNAPSHOT using Java 25.0.1 with PID 22008 (E:\RetoTecnicoSofka25Diciembre2025\BACKEND\JAVA\RetoTecnicoSofka25Diciembre2025Backend\build\libs\com.mcg.sofka.retotecnicobanco-0.0.1-SNAPSHOT.jar started by Administrator in E:\RetoTecnicoSofka25Diciembre2025\BACKEND\JAVA\RetoTecnicoSofka25Diciembre2025Backend)
+2025-12-26T01:09:56.900-05:00  INFO 22008 --- [           main] toTecnicoSofka25Diciembre2025Application : No active profile set, falling back to 1 default profile: "default"
+2025-12-26T01:09:58.312-05:00  INFO 22008 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-26T01:09:58.377-05:00  INFO 22008 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 53 ms. Found 2 JPA repository interfaces.
+2025-12-26T01:09:59.785-05:00  INFO 22008 --- [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8097 (http)
+2025-12-26T01:09:59.804-05:00  INFO 22008 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-26T01:09:59.805-05:00  INFO 22008 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2025-12-26T01:09:59.847-05:00  INFO 22008 --- [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2845 ms
+2025-12-26T01:10:00.054-05:00  INFO 22008 --- [           main] c.m.s.r.a.r.c.SofkaDataSourceConfig      : Resolved DB URL: jdbc:h2:mem:sofka;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE (masked), username: sa
+2025-12-26T01:10:00.154-05:00  WARN 22008 --- [           main] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2025-12-26T01:10:00.154-05:00  INFO 22008 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-26T01:10:00.368-05:00  INFO 22008 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:sofka user=SA
+2025-12-26T01:10:00.370-05:00  INFO 22008 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-26T01:10:00.404-05:00  INFO 22008 --- [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2025-12-26T01:10:00.453-05:00  INFO 22008 --- [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.0.Final
+2025-12-26T01:10:00.924-05:00  INFO 22008 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-26T01:10:01.012-05:00  INFO 22008 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:sofka]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: SOFKA/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-26T01:10:01.742-05:00  INFO 22008 --- [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-26T01:10:01.774-05:00  INFO 22008 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-26T01:10:01.980-05:00  INFO 22008 --- [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-26T01:10:02.508-05:00  WARN 22008 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-26T01:10:03.529-05:00  INFO 22008 --- [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8097 (http) with context path '/'
+2025-12-26T01:10:03.548-05:00  INFO 22008 --- [           main] toTecnicoSofka25Diciembre2025Application : Started RetoTecnicoSofka25Diciembre2025Application in 7.26 seconds (process running for 8.12)
+2025-12-26T01:10:24.358-05:00  INFO 22008 --- [nio-8097-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-26T01:10:24.359-05:00  INFO 22008 --- [nio-8097-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-12-26T01:10:24.360-05:00  INFO 22008 --- [nio-8097-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-12-26T01:10:24.670-05:00  INFO 22008 --- [nio-8097-exec-2] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 263 ms
+2025-12-26T01:15:57.468-05:00  INFO 22008 --- [nio-8097-exec-6] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 80 ms
+2025-12-26T06:08:18.766-05:00  WARN 22008 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4h40m23s146ms524µs900ns).
