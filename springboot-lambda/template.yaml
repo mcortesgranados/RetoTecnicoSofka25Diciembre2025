@@ -1,0 +1,39 @@
+﻿AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Serverless Spring Boot (Lambda) entry for Person operations
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 1024
+
+Resources:
+  PersonCommandFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PersonCommandHandler
+      Handler: com.mcg.sofka.retotecnicobanco.api.rest.adapter.lambda.CommandLambdaHandler::handleRequest
+      Runtime: java17
+      CodeUri: build/distributions/springboot-lambda-0.0.1-SNAPSHOT.zip
+      Architectures:
+        - x86_64
+      Events:
+        CreatePersonApi:
+          Type: Api
+          Properties:
+            Path: /person/command
+            Method: post
+
+  PersonQueryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PersonQueryHandler
+      Handler: com.mcg.sofka.retotecnicobanco.api.rest.adapter.lambda.QueryLambdaHandler::handleRequest
+      Runtime: java17
+      CodeUri: build/distributions/springboot-lambda-0.0.1-SNAPSHOT.zip
+      Events:
+        QueryPersonApi:
+          Type: Api
+          Properties:
+            Path: /person/query
+            Method: get
