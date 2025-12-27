@@ -19,6 +19,7 @@ import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.MovementR
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.MovementWriteRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.PersonReadRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.PersonWriteRepositoryPort;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.AccountStatementReadRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetAccountQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetClientQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetPersonQuery;
@@ -28,6 +29,7 @@ import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListAccount
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListPersonQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListMovementByAccountQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListPendingMovementEventsQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListAccountStatementQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.EventDrivenService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreateAccountService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreateClientService;
@@ -43,6 +45,7 @@ import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetPers
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListAccountByClientService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListMovementByAccountService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListPendingMovementEventsService;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListAccountStatementService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListPersonService;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.event.DomainEvent;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Account;
@@ -50,6 +53,7 @@ import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Client;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Movement;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.MovementEvent;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Person;
+import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.AccountStatementEntry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -124,6 +128,13 @@ public class BeanConfig {
     @Bean
     public QueryUseCase<ListMovementByAccountQuery, List<Movement>> listMovementByAccountUseCase(MovementReadRepositoryPort readPort) {
         return new ListMovementByAccountService(readPort);
+    }
+
+    @Bean
+    public QueryUseCase<ListAccountStatementQuery, List<AccountStatementEntry>> listAccountStatementUseCase(
+            AccountReadRepositoryPort accountReadPort,
+            AccountStatementReadRepositoryPort statementReadPort) {
+        return new ListAccountStatementService(accountReadPort, statementReadPort);
     }
 
     @Bean
