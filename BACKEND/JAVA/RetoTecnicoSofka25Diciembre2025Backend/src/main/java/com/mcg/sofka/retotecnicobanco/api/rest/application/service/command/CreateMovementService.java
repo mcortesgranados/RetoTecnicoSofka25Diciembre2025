@@ -4,7 +4,10 @@ import com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto.CreateMov
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.input.CommandUseCase;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.AccountReadRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.AccountWriteRepositoryPort;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.EventPublisherPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.MovementWriteRepositoryPort;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.service.event.MovementEventRecorder;
+import com.mcg.sofka.retotecnicobanco.api.rest.domain.event.MovementCreatedEvent;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Account;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Movement;
 
@@ -19,13 +22,19 @@ public class CreateMovementService implements CommandUseCase<CreateMovementComma
     private final AccountReadRepositoryPort accountReadPort;
     private final AccountWriteRepositoryPort accountWritePort;
     private final MovementWriteRepositoryPort movementWritePort;
+    private final MovementEventRecorder movementEventRecorder;
+    private final EventPublisherPort publisherPort;
 
     public CreateMovementService(AccountReadRepositoryPort accountReadPort,
                                  AccountWriteRepositoryPort accountWritePort,
-                                 MovementWriteRepositoryPort movementWritePort) {
+                                 MovementWriteRepositoryPort movementWritePort,
+                                 MovementEventRecorder movementEventRecorder,
+                                 EventPublisherPort publisherPort) {
         this.accountReadPort = accountReadPort;
         this.accountWritePort = accountWritePort;
         this.movementWritePort = movementWritePort;
+        this.movementEventRecorder = movementEventRecorder;
+        this.publisherPort = publisherPort;
     }
 
     @Override
@@ -57,6 +66,9 @@ public class CreateMovementService implements CommandUseCase<CreateMovementComma
         movement.setBalanceAfter(newBalance);
         movement.setCreatedAt(OffsetDateTime.now());
 
-        return movementWritePort.save(movement);
+        Movement saved = movementWritePort.save(movement);
+        movementEventRecorder.record(saved);
+        publisherPort.publish(new MovementCreatedEvent(saved));
+        return saved;
     }
 }
