@@ -1,8 +1,9 @@
 package com.mcg.sofka.retotecnicobanco.api.rest.adapter.config;
 
-import com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto.CreateAccountCommand;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto.CreatePersonCommand;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto.CreateClientCommand;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto.CreateAccountCommand;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.command.dto.CreateMovementCommand;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.input.CommandUseCase;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.input.EventHandlerUseCase;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.input.QueryUseCase;
@@ -13,23 +14,31 @@ import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.ClientWri
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.EventPublisherPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.PersonReadRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.PersonWriteRepositoryPort;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.MovementReadRepositoryPort;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.MovementWriteRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetAccountQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetClientQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetPersonQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetMovementQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListAccountByClientQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListPersonQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListMovementByAccountQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.EventDrivenService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreateAccountService;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreateMovementService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreateClientService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreatePersonService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetAccountService;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetMovementService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetClientService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetPersonService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListAccountByClientService;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListMovementByAccountService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListPersonService;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.event.DomainEvent;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Account;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Client;
+import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Movement;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Person;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -72,6 +81,13 @@ public class BeanConfig {
     }
 
     @Bean
+    public CommandUseCase<CreateMovementCommand, Movement> createMovementUseCase(AccountReadRepositoryPort accountReadPort,
+                                                                                 AccountWriteRepositoryPort accountWritePort,
+                                                                                 MovementWriteRepositoryPort movementWritePort) {
+        return new CreateMovementService(accountReadPort, accountWritePort, movementWritePort);
+    }
+
+    @Bean
     public QueryUseCase<GetAccountQuery, Optional<Account>> getAccountUseCase(AccountReadRepositoryPort readPort) {
         return new GetAccountService(readPort);
     }
@@ -79,6 +95,16 @@ public class BeanConfig {
     @Bean
     public QueryUseCase<ListAccountByClientQuery, List<Account>> listAccountByClientUseCase(AccountReadRepositoryPort readPort) {
         return new ListAccountByClientService(readPort);
+    }
+
+    @Bean
+    public QueryUseCase<GetMovementQuery, Optional<Movement>> getMovementUseCase(MovementReadRepositoryPort readPort) {
+        return new GetMovementService(readPort);
+    }
+
+    @Bean
+    public QueryUseCase<ListMovementByAccountQuery, List<Movement>> listMovementByAccountUseCase(MovementReadRepositoryPort readPort) {
+        return new ListMovementByAccountService(readPort);
     }
 
     @Bean
