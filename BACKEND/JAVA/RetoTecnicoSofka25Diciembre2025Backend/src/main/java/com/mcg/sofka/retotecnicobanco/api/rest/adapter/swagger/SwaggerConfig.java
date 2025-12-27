@@ -68,4 +68,12 @@ public class SwaggerConfig {
 				.pathsToMatch("/movement/event/**")
 				.build();
 	}
+
+	@Bean
+	public GroupedOpenApi accountStatementApi() {
+		return GroupedOpenApi.builder()
+				.group("account-statement")
+				.pathsToMatch("/account/statement/**")
+				.build();
+	}
 }
