@@ -31,7 +31,8 @@ public class MovementCommandController {
         this.createUseCase = createUseCase;
     }
 
-    @Operation(summary = "Record a movement", description = "Creates a debit or credit movement and updates the account balance.")
+    @Operation(summary = "Record a movement",
+            description = "Creates a debit or credit movement (positive amounts credit, negative amounts debit) and updates the account balance.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Movement recorded"),
             @ApiResponse(responseCode = "400", description = "Validation failure", content = @Content),
@@ -45,17 +46,29 @@ public class MovementCommandController {
                     required = true,
                     content = @Content(
                             schema = @Schema(implementation = CreateMovementCommand.class),
-                            examples = @ExampleObject(
-                                    name = "Record Movement",
-                                    summary = "Credit deposit",
-                                    value = "{\n"
-                                            + "  \"accountId\": 1,\n"
-                                            + "  \"movementType\": \"CREDIT\",\n"
-                                            + "  \"amount\": 500.00,\n"
-                                            + "  \"description\": \"Salary deposit\"\n"
-                                            + "}"
-                            )
-                    ))
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Record Movement",
+                                            summary = "Credit deposit",
+                                            value = "{\n"
+                                                    + "  \"accountId\": 1,\n"
+                                                    + "  \"movementType\": \"CREDIT\",\n"
+                                                    + "  \"amount\": 500.00,\n"
+                                                    + "  \"description\": \"Salary deposit\"\n"
+                                                    + "}"
+                                    ),
+                                    @ExampleObject(
+                                            name = "Record Withdrawal",
+                                            summary = "Debit withdrawal with a negative value",
+                                            value = "{\n"
+                                                    + "  \"accountId\": 1,\n"
+                                                    + "  \"movementType\": \"DEBIT\",\n"
+                                                    + "  \"amount\": -150.00,\n"
+                                                    + "  \"description\": \"ATM withdrawal\"\n"
+                                                    + "}"
+                                    )
+                            })
+                    )
             CreateMovementCommand command) {
 
         Movement saved = createUseCase.execute(command);
