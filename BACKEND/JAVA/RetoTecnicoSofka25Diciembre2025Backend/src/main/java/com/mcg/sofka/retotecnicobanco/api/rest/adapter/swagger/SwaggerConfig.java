@@ -76,4 +76,12 @@ public class SwaggerConfig {
 				.pathsToMatch("/account/statement/**")
 				.build();
 	}
+
+	@Bean
+	public GroupedOpenApi reportApi() {
+		return GroupedOpenApi.builder()
+				.group("reportes")
+				.pathsToMatch("/reportes/**")
+				.build();
+	}
 }
