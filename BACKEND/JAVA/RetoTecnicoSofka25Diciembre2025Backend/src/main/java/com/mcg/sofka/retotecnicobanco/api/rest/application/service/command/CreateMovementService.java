@@ -40,18 +40,27 @@ public class CreateMovementService implements CommandUseCase<CreateMovementComma
     @Override
     public Movement execute(CreateMovementCommand command) {
         BigDecimal amount = command.getAmount();
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Movement amount must be a positive value");
+        if (amount == null) {
+            throw new IllegalArgumentException("Movement amount must be provided");
+        }
+        int amountSign = amount.compareTo(BigDecimal.ZERO);
+        if (amountSign == 0) {
+            throw new IllegalArgumentException("Movement amount must not be zero");
         }
 
         Account account = accountReadPort.findById(command.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
         Movement.MovementType movementType = Movement.MovementType.from(command.getMovementType());
+        if (movementType == Movement.MovementType.CREDIT && amountSign < 0) {
+            throw new IllegalArgumentException("Credit movements must have a positive amount");
+        }
+        if (movementType == Movement.MovementType.DEBIT && amountSign > 0) {
+            throw new IllegalArgumentException("Debit movements must have a negative amount");
+        }
+
         BigDecimal currentBalance = account.getCurrentBalance() != null ? account.getCurrentBalance() : BigDecimal.ZERO;
-        BigDecimal newBalance = movementType == Movement.MovementType.CREDIT
-                ? currentBalance.add(amount)
-                : currentBalance.subtract(amount);
+        BigDecimal newBalance = currentBalance.add(amount);
 
         account.setCurrentBalance(newBalance);
         account.setUpdatedAt(OffsetDateTime.now());
