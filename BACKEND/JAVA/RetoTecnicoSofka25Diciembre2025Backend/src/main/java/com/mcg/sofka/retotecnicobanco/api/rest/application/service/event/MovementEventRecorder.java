@@ -18,7 +18,7 @@ import java.util.Map;
 public class MovementEventRecorder {
 
     private final MovementEventWriteRepositoryPort writePort;
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().findAndRegisterModules();
 
     public MovementEventRecorder(MovementEventWriteRepositoryPort writePort) {
         this.writePort = writePort;
