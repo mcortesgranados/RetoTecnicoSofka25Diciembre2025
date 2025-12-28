@@ -25,11 +25,17 @@ import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetClientQu
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetPersonQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetMovementEventQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetMovementQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.AccountStatementReportQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetAccountQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetClientQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetMovementEventQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetMovementQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.GetPersonQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListAccountByClientQuery;
-import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListPersonQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListAccountStatementQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListMovementByAccountQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListPendingMovementEventsQuery;
-import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListAccountStatementQuery;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.query.dto.ListPersonQuery;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.EventDrivenService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreateAccountService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreateClientService;
@@ -37,23 +43,25 @@ import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.Creat
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.CreatePersonService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.command.PublishMovementEventService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.event.MovementEventRecorder;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.AccountStatementReportService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetAccountService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetClientService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetMovementService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetMovementEventService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.GetPersonService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListAccountByClientService;
+import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListAccountStatementService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListMovementByAccountService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListPendingMovementEventsService;
-import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListAccountStatementService;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.query.ListPersonService;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.event.DomainEvent;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Account;
+import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.AccountStatementEntry;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Client;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Movement;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.MovementEvent;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Person;
-import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.AccountStatementEntry;
+import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.report.AccountStatementReport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -135,6 +143,13 @@ public class BeanConfig {
             AccountReadRepositoryPort accountReadPort,
             AccountStatementReadRepositoryPort statementReadPort) {
         return new ListAccountStatementService(accountReadPort, statementReadPort);
+    }
+
+    @Bean
+    public QueryUseCase<AccountStatementReportQuery, AccountStatementReport> accountStatementReportUseCase(
+            AccountReadRepositoryPort accountReadPort,
+            MovementReadRepositoryPort movementReadPort) {
+        return new AccountStatementReportService(accountReadPort, movementReadPort);
     }
 
     @Bean
