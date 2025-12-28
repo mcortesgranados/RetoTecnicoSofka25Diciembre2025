@@ -8,6 +8,7 @@ import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.MovementE
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.MovementWriteRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.event.MovementEventRecorder;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.event.DomainEvent;
+import com.mcg.sofka.retotecnicobanco.api.rest.domain.exception.MovementInsufficientBalanceException;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Account;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Movement;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.MovementEvent;
@@ -64,6 +65,19 @@ class CreateMovementServiceTest {
         assertThrows(IllegalArgumentException.class, () ->
                 fixture.service.execute(
                         new CreateMovementCommand(1L, "CREDIT", BigDecimal.ZERO, "No op")));
+    }
+
+    @Test
+    void rejectsDebitWhenBalanceIsInsufficient() {
+        Fixture fixture = new Fixture();
+        fixture.account.setCurrentBalance(BigDecimal.valueOf(100));
+
+        MovementInsufficientBalanceException exception = assertThrows(
+                MovementInsufficientBalanceException.class,
+                () -> fixture.service.execute(
+                        new CreateMovementCommand(1L, "DEBIT", BigDecimal.valueOf(-200), "Rent")));
+
+        assertEquals("Saldo no disponible", exception.getMessage());
     }
 
     private static final class Fixture {
