@@ -8,6 +8,7 @@ import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.EventPubl
 import com.mcg.sofka.retotecnicobanco.api.rest.application.port.output.MovementWriteRepositoryPort;
 import com.mcg.sofka.retotecnicobanco.api.rest.application.service.event.MovementEventRecorder;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.event.MovementCreatedEvent;
+import com.mcg.sofka.retotecnicobanco.api.rest.domain.exception.MovementInsufficientBalanceException;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Account;
 import com.mcg.sofka.retotecnicobanco.api.rest.domain.model.Movement;
 
@@ -61,6 +62,10 @@ public class CreateMovementService implements CommandUseCase<CreateMovementComma
 
         BigDecimal currentBalance = account.getCurrentBalance() != null ? account.getCurrentBalance() : BigDecimal.ZERO;
         BigDecimal newBalance = currentBalance.add(amount);
+
+        if (movementType == Movement.MovementType.DEBIT && newBalance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new MovementInsufficientBalanceException();
+        }
 
         account.setCurrentBalance(newBalance);
         account.setUpdatedAt(OffsetDateTime.now());
