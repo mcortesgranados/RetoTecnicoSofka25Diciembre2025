@@ -23,4 +23,14 @@ public class RestExceptionHandler {
         problemDetail.setProperty("errorCode", "movement.insufficient_balance");
         return ResponseEntity.badRequest().body(problemDetail);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ProblemDetail> handleIllegalArgument(IllegalArgumentException exception,
+                                                               HttpServletRequest request) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+        problemDetail.setTitle("Solicitud invalida");
+        problemDetail.setProperty("path", request.getRequestURI());
+        problemDetail.setProperty("errorCode", "request.invalid");
+        return ResponseEntity.badRequest().body(problemDetail);
+    }
 }
