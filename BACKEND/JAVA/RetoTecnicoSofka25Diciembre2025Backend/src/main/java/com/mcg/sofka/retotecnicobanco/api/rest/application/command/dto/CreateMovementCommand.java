@@ -7,6 +7,9 @@ import java.math.BigDecimal;
 
 /**
  * Command DTO containing the data required to register an account movement.
+ *
+ * <p>The {@code amount} may be positive for credits or negative for debits, and the supplied
+ * {@code movementType} must align with that sign so the balance calculation behaves predictably.
  */
 public class CreateMovementCommand {
 
